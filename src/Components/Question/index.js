@@ -1,6 +1,5 @@
 
 import styled from "@emotion/styled";
-
 const Wrapper = styled.div`
 
 .question-container {
@@ -53,9 +52,9 @@ function Question({ questionData }) {
   return (
     <Wrapper>
     <div className="question-container">
-      <h2 className="question">{questionData.question}</h2>
+      <h2 className="question">{questionData?.question}</h2>
       <div className="options-container">
-        {questionData.options.map((option,index) => {
+        {questionData?.incorrect_answers.map((option,index) => {
           return (
             <div key={index} className="option">
               <input type="checkbox" name={option} value={option} />
@@ -70,3 +69,4 @@ function Question({ questionData }) {
 }
 
 export default Question;
+

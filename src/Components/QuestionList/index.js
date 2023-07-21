@@ -72,7 +72,6 @@ export default function QuestionsList({ questions }) {
   const totalQuestions = questions.length;
 
   const greenGradient = ((questionNumber + 1) / totalQuestions) * 360;
-  console.log(greenGradient);
   return (
     <Wrapper>
     <div className="questions-list">
