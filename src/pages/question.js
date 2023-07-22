@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
-import QuestionPage from "@/Container/QuestionPage";
+import {QuestionPage} from "@/Container/QuestionPage";
 const Wrapper = styled.div`
 
-    background: blueviolet;
+  background: blueviolet;
   width: 100vw;
   height: 100vh;
   padding-top: 15vh;

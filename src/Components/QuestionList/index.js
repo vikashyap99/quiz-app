@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Question from '../Question';
 import Button from "../Button";
 import styled from "@emotion/styled";
-
+import { useRouter } from 'next/router'
 const Wrapper = styled.div`
 
 .questions-list {
@@ -10,9 +10,8 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     background: #fff;
-    min-height: 85vh;
+    height: 100vh;
     border-radius: 25px 25px 0px 0px;
-    padding: 0 18px;
   }
   
   .questions-counter {
@@ -68,8 +67,26 @@ const Wrapper = styled.div`
 `
 
 export default function QuestionsList({ questions }) {
+
+    const router = useRouter()
+
   const [questionNumber, setQuestionNumber] = useState(0);
+  const [totalScore, setTotalScore] = useState(0)
   const totalQuestions = questions.length;
+
+  const nextQuestionHandler = () => {
+
+    if(questionNumber >= totalQuestions-1){
+        localStorage.setItem('score', totalScore )
+        router.push('/score')
+        return
+    }
+    setQuestionNumber((prevState) => prevState + 1)
+    
+
+  }
+
+  console.log(totalScore)
 
   const greenGradient = ((questionNumber + 1) / totalQuestions) * 360;
   return (
@@ -90,10 +107,14 @@ export default function QuestionsList({ questions }) {
           </div>
         </div>
       </div>
-      <Question questionData={questions[questionNumber]} />
+      <Question
+       questionData={questions[questionNumber]}
+       totalScore = {totalScore}
+       setTotalScore = {setTotalScore}
+        />
       <div className="button-container">
         <Button
-          clickHandler={() => setQuestionNumber((prevState) => prevState + 1)}
+          clickHandler={() => nextQuestionHandler()}
         >
           Next
         </Button>

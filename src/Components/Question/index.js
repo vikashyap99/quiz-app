@@ -1,5 +1,6 @@
 
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 const Wrapper = styled.div`
 
 .question-container {
@@ -37,27 +38,70 @@ const Wrapper = styled.div`
   }
   
   .option input:checked {
-    background-color: red;
+    background-color: green;
   }
   
   .option label {
     font-size: 18px;
     line-height: 24px;
   }
+
+  .selected {
+    border: 3px solid green;
+    background: #fff;
+    box-shadow: 1px 1px 1px 1px green;
+
+  }
   
 
 `
 
-function Question({ questionData }) {
+
+function Question({ questionData, totalScore, setTotalScore }) {
+
+    const [answers, setAnswers] = useState([])
+    const [correctAnswerFlag, setCorrectAnswerFlag] = useState(false)
+    const [getAnswerFlag, setGetAnswerFlag] = useState('')
+
+    useEffect(() => {
+        // merging incorrect and correct answers
+        if(questionData){
+            let newArray = [...questionData.incorrect_answers]
+            newArray.push(questionData.correct_answer)
+        setAnswers(newArray)
+        }
+        
+    } ,[questionData])
+
+    
+const handleAnswer = (value) => {
+    setGetAnswerFlag(value)
+    if(value === questionData.correct_answer){
+      setTotalScore((prev) => prev + 1)
+    }
+      
+}
+
   return (
     <Wrapper>
     <div className="question-container">
       <h2 className="question">{questionData?.question}</h2>
       <div className="options-container">
-        {questionData?.incorrect_answers.map((option,index) => {
+        {answers.map((option,index) => {
           return (
-            <div key={index} className="option">
-              <input type="checkbox" name={option} value={option} />
+            <div
+             key={index} 
+            className={getAnswerFlag === option ? "option selected" : "option"}
+            onClick={() => handleAnswer(option)}
+              >
+              {/* <input onChange={handleAnswer} type="checkbox"  name={option} value={option} /> */}
+              {
+                getAnswerFlag === option 
+                ?
+                <img alt='correct_answer' src="/correct_answer.svg"/>
+                :
+                <img alt="answer" src='/answer.svg' />
+              }
               <label for={option}> {option}</label>
             </div>
           );
